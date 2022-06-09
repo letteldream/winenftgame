@@ -4,12 +4,12 @@ import {
   Vintner as TokenContract,
 } from "../generated/Vintner/Vintner";
 
-import { Token, User } from "../generated/schema";
+import { VintnerToken, User } from "../generated/schema";
 
 export function handleTransfer(event: TransferEvent): void {
-  let token = Token.load(event.params.tokenId.toString());
+  let token = VintnerToken.load(event.params.tokenId.toString());
   if (!token) {
-    token = new Token(event.params.tokenId.toString());
+    token = new VintnerToken(event.params.tokenId.toString());
     token.creator = event.params.to.toHexString();
     token.tokenID = event.params.tokenId;
 

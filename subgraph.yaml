@@ -8,6 +8,7 @@ dataSources:
     source:
       address: "0x942dA7B4dfd375134f2787b6b6ACa51054cD2324"
       abi: Vintner
+      startBlock: 1654663051
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.5
@@ -36,7 +37,7 @@ dataSources:
         # - event: Paused(address)
         #   handler: handlePaused
         - event: Transfer(indexed address,indexed address,indexed uint256)
-          handler: handleTransfer
+          handler: handleVintnerTransfer
         # - event: Unpaused(address)
         #   handler: handleUnpaused
         # - event: onVintnerCreated(uint256)
@@ -44,3 +45,24 @@ dataSources:
         # - event: onVintnerRevealed(uint256,uint256)
         #   handler: handleonVintnerRevealed
       file: ./src/vintner.ts
+  - kind: ethereum
+    name: Upgrade
+    network: fuji
+    source:
+      address: "0x791007EF0BE8e786C1577784b46eDb4176f7B073"
+      abi: Upgrade
+      startBlock: 1654663051
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.5
+      language: wasm/assemblyscript
+      entities:
+        - Token
+        - User
+      abis:
+        - name: Upgrade
+          file: ./abis/Upgrade.json
+      eventHandlers:
+        - event: Transfer(indexed address,indexed address,indexed uint256)
+          handler: handleUpgradeTransfer
+      file: ./src/Upgrade.ts

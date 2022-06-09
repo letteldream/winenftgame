@@ -1,4 +1,15 @@
-type Token @entity {
+type VintnerToken @entity {
+  id: ID!
+  tokenID: BigInt!
+  contentURI: String
+  # tokenIPFSPath: String
+  name: String!
+  createdAtTimestamp: BigInt!
+  creator: User!
+  owner: User!
+}
+
+type UpgradeToken @entity {
   id: ID!
   tokenID: BigInt!
   contentURI: String
@@ -11,6 +22,8 @@ type Token @entity {
 
 type User @entity {
   id: ID!
-  tokens: [Token!]! @derivedFrom(field: "owner")
-  created: [Token!]! @derivedFrom(field: "creator")
+  vintnerTokens: [VintnerToken!]! @derivedFrom(field: "owner")
+  vintnerCreated: [VintnerToken!]! @derivedFrom(field: "creator")
+  upgradeTokens: [UpgradeToken!]! @derivedFrom(field: "owner")
+  upgradeCreated: [UpgradeToken!]! @derivedFrom(field: "creator")
 }
