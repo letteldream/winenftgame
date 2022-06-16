@@ -6,15 +6,16 @@ dataSources:
     name: Vintner
     network: fuji
     source:
-      address: "0x942dA7B4dfd375134f2787b6b6ACa51054cD2324"
+      address: "0xCfD5685c84ff9745BF4DE8BA511431bC72aacd5C"
       abi: Vintner
-      startBlock: 1654663051
+      # startBlock: 1654663051
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.5
       language: wasm/assemblyscript
       entities:
-        - Token
+        - VintnerToken
+        - UpgradeToken
         - User
           # - Approval
           # - ApprovalForAll
@@ -49,15 +50,16 @@ dataSources:
     name: Upgrade
     network: fuji
     source:
-      address: "0x791007EF0BE8e786C1577784b46eDb4176f7B073"
+      address: "0x75e25051BEdd7f2F0B952B4B5acB2fc425d80484"
       abi: Upgrade
-      startBlock: 1654663051
+      # startBlock: 1654663051
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.5
       language: wasm/assemblyscript
       entities:
-        - Token
+        - VintnerToken
+        - UpgradeToken
         - User
       abis:
         - name: Upgrade

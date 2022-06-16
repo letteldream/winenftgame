@@ -6,7 +6,7 @@ import {
 
 import { UpgradeToken, User } from "../generated/schema";
 
-export function handleTransfer(event: TransferEvent): void {
+export function handleUpgradeTransfer(event: TransferEvent): void {
   let token = UpgradeToken.load(event.params.tokenId.toString());
   if (!token) {
     token = new UpgradeToken(event.params.tokenId.toString());

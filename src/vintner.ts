@@ -6,7 +6,7 @@ import {
 
 import { VintnerToken, User } from "../generated/schema";
 
-export function handleTransfer(event: TransferEvent): void {
+export function handleVintnerTransfer(event: TransferEvent): void {
   let token = VintnerToken.load(event.params.tokenId.toString());
   if (!token) {
     token = new VintnerToken(event.params.tokenId.toString());
