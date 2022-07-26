@@ -2,8 +2,13 @@
   {
     "inputs": [
       {
-        "internalType": "contract VintageWine",
-        "name": "_vintageWine",
+        "internalType": "address",
+        "name": "_grapeAddress",
+        "type": "address"
+      },
+      {
+        "internalType": "address",
+        "name": "_couponSigner",
         "type": "address"
       },
       {
@@ -213,20 +218,7 @@
   },
   {
     "inputs": [],
-    "name": "NUM_GEN0_VINTNERS",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "NUM_GEN1_VINTNERS",
+    "name": "NUM_VINTNERS",
     "outputs": [
       {
         "internalType": "uint256",
@@ -252,7 +244,7 @@
   },
   {
     "inputs": [],
-    "name": "VINTNERS_PER_VINTAGEWINE_MINT_LEVEL",
+    "name": "VINTNER_PRICE_AVAX",
     "outputs": [
       {
         "internalType": "uint256",
@@ -265,7 +257,7 @@
   },
   {
     "inputs": [],
-    "name": "VINTNER_PRICE_AVAX",
+    "name": "VINTNER_PRICE_GRAPE",
     "outputs": [
       {
         "internalType": "uint256",
@@ -292,6 +284,19 @@
   {
     "inputs": [],
     "name": "VINTNER_YIELD",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "WHITELIST_VINTNERS",
     "outputs": [
       {
         "internalType": "uint256",
@@ -340,54 +345,13 @@
     "type": "function"
   },
   {
-    "inputs": [
+    "inputs": [],
+    "name": "couponSigner",
+    "outputs": [
       {
         "internalType": "address",
-        "name": "_owner",
+        "name": "",
         "type": "address"
-      },
-      {
-        "internalType": "uint256",
-        "name": "_offset",
-        "type": "uint256"
-      },
-      {
-        "internalType": "uint256",
-        "name": "_maxSize",
-        "type": "uint256"
-      }
-    ],
-    "name": "batchedVintnersOfOwner",
-    "outputs": [
-      {
-        "components": [
-          {
-            "internalType": "uint256",
-            "name": "tokenId",
-            "type": "uint256"
-          },
-          {
-            "internalType": "uint256",
-            "name": "vintnerType",
-            "type": "uint256"
-          }
-        ],
-        "internalType": "struct Vintner.VintnerInfo[]",
-        "name": "",
-        "type": "tuple[]"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "currentVINTAGEWINEMintCost",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
       }
     ],
     "stateMutability": "view",
@@ -474,6 +438,19 @@
     "type": "function"
   },
   {
+    "inputs": [],
+    "name": "grapeAddress",
+    "outputs": [
+      {
+        "internalType": "contract IERC20",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
     "inputs": [
       {
         "internalType": "address",
@@ -541,14 +518,54 @@
         "type": "uint256"
       }
     ],
-    "name": "mintVintnerWithVINTAGEWINE",
+    "name": "mintVintnerWithGrape",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "qty",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "allotted",
+        "type": "uint256"
+      },
+      {
+        "components": [
+          {
+            "internalType": "bytes32",
+            "name": "r",
+            "type": "bytes32"
+          },
+          {
+            "internalType": "bytes32",
+            "name": "s",
+            "type": "bytes32"
+          },
+          {
+            "internalType": "uint8",
+            "name": "v",
+            "type": "uint8"
+          }
+        ],
+        "internalType": "struct Vintner.Coupon",
+        "name": "coupon",
+        "type": "tuple"
+      }
+    ],
+    "name": "mintWhitelist",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
   },
   {
     "inputs": [],
-    "name": "mintingStartedAVAX",
+    "name": "mintingStarted",
     "outputs": [
       {
         "internalType": "bool",
@@ -561,7 +578,7 @@
   },
   {
     "inputs": [],
-    "name": "mintingStartedVINTAGEWINE",
+    "name": "mintingStartedWhitelist",
     "outputs": [
       {
         "internalType": "bool",
@@ -635,6 +652,48 @@
     "name": "renounceOwnership",
     "outputs": [],
     "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "royaltiesAddress",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "tokenId",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "value",
+        "type": "uint256"
+      }
+    ],
+    "name": "royaltyInfo",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "receiver",
+        "type": "address"
+      },
+      {
+        "internalType": "uint256",
+        "name": "royaltyAmount",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
     "type": "function"
   },
   {
@@ -722,25 +781,12 @@
   {
     "inputs": [
       {
-        "internalType": "uint256",
-        "name": "_startTime",
-        "type": "uint256"
+        "internalType": "address",
+        "name": "couponSigner_",
+        "type": "address"
       }
     ],
-    "name": "setStartTimeAVAX",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "uint256",
-        "name": "_startTime",
-        "type": "uint256"
-      }
-    ],
-    "name": "setStartTimeVINTAGEWINE",
+    "name": "setCouponSigner",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
@@ -749,11 +795,63 @@
     "inputs": [
       {
         "internalType": "address",
-        "name": "_vintageWine",
+        "name": "_grapeAddress",
         "type": "address"
       }
     ],
-    "name": "setVintageWine",
+    "name": "setGrapeAddress",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "_royaltiesAddress",
+        "type": "address"
+      }
+    ],
+    "name": "setRoyaltiesAddress",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "_royaltiesFees",
+        "type": "uint256"
+      }
+    ],
+    "name": "setRoyaltiesFees",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "_startTime",
+        "type": "uint256"
+      }
+    ],
+    "name": "setStartTime",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "_startTime",
+        "type": "uint256"
+      }
+    ],
+    "name": "setStartTimeWhitelist",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
@@ -772,6 +870,19 @@
       }
     ],
     "name": "setVintnerType",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "qty",
+        "type": "uint256"
+      }
+    ],
+    "name": "setWhitelistMintCount",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
@@ -804,7 +915,7 @@
   },
   {
     "inputs": [],
-    "name": "startTimeAVAX",
+    "name": "startTime",
     "outputs": [
       {
         "internalType": "uint256",
@@ -817,7 +928,7 @@
   },
   {
     "inputs": [],
-    "name": "startTimeVINTAGEWINE",
+    "name": "startTimeWhitelist",
     "outputs": [
       {
         "internalType": "uint256",
@@ -864,49 +975,6 @@
     "inputs": [
       {
         "internalType": "uint256",
-        "name": "index",
-        "type": "uint256"
-      }
-    ],
-    "name": "tokenByIndex",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "owner",
-        "type": "address"
-      },
-      {
-        "internalType": "uint256",
-        "name": "index",
-        "type": "uint256"
-      }
-    ],
-    "name": "tokenOfOwnerByIndex",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "uint256",
         "name": "",
         "type": "uint256"
       }
@@ -936,19 +1004,6 @@
         "internalType": "string",
         "name": "",
         "type": "string"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "totalSupply",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
       }
     ],
     "stateMutability": "view",
@@ -1011,12 +1066,12 @@
   },
   {
     "inputs": [],
-    "name": "vintageWine",
+    "name": "vintnerPublicMinted",
     "outputs": [
       {
-        "internalType": "contract VintageWine",
+        "internalType": "uint256",
         "name": "",
-        "type": "address"
+        "type": "uint256"
       }
     ],
     "stateMutability": "view",
@@ -1063,7 +1118,7 @@
   },
   {
     "inputs": [],
-    "name": "vintnersMintedWithAVAX",
+    "name": "vintnersMintedWhitelist",
     "outputs": [
       {
         "internalType": "uint256",
@@ -1075,8 +1130,14 @@
     "type": "function"
   },
   {
-    "inputs": [],
-    "name": "vintnersMintedWithVINTAGEWINE",
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "name": "whitelistClaimed",
     "outputs": [
       {
         "internalType": "uint256",

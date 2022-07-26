@@ -164,20 +164,6 @@ export class onUpgradeCreated__Params {
   }
 }
 
-export class Upgrade__batchedUpgradesOfOwnerResultValue0Struct extends ethereum.Tuple {
-  get tokenId(): BigInt {
-    return this[0].toBigInt();
-  }
-
-  get level(): BigInt {
-    return this[1].toBigInt();
-  }
-
-  get _yield(): BigInt {
-    return this[2].toBigInt();
-  }
-}
-
 export class Upgrade__levelsResult {
   value0: BigInt;
   value1: BigInt;
@@ -227,6 +213,31 @@ export class Upgrade__levelsResult {
 
   getYield(): BigInt {
     return this.value4;
+  }
+}
+
+export class Upgrade__royaltyInfoResult {
+  value0: Address;
+  value1: BigInt;
+
+  constructor(value0: Address, value1: BigInt) {
+    this.value0 = value0;
+    this.value1 = value1;
+  }
+
+  toMap(): TypedMap<string, ethereum.Value> {
+    let map = new TypedMap<string, ethereum.Value>();
+    map.set("value0", ethereum.Value.fromAddress(this.value0));
+    map.set("value1", ethereum.Value.fromUnsignedBigInt(this.value1));
+    return map;
+  }
+
+  getReceiver(): Address {
+    return this.value0;
+  }
+
+  getRoyaltyAmount(): BigInt {
+    return this.value1;
   }
 }
 
@@ -286,51 +297,6 @@ export class Upgrade extends ethereum.SmartContract {
     }
     let value = result.value;
     return ethereum.CallResult.fromValue(value[0].toBigInt());
-  }
-
-  batchedUpgradesOfOwner(
-    _owner: Address,
-    _offset: BigInt,
-    _maxSize: BigInt
-  ): Array<Upgrade__batchedUpgradesOfOwnerResultValue0Struct> {
-    let result = super.call(
-      "batchedUpgradesOfOwner",
-      "batchedUpgradesOfOwner(address,uint256,uint256):((uint256,uint256,uint256)[])",
-      [
-        ethereum.Value.fromAddress(_owner),
-        ethereum.Value.fromUnsignedBigInt(_offset),
-        ethereum.Value.fromUnsignedBigInt(_maxSize)
-      ]
-    );
-
-    return result[0].toTupleArray<
-      Upgrade__batchedUpgradesOfOwnerResultValue0Struct
-    >();
-  }
-
-  try_batchedUpgradesOfOwner(
-    _owner: Address,
-    _offset: BigInt,
-    _maxSize: BigInt
-  ): ethereum.CallResult<
-    Array<Upgrade__batchedUpgradesOfOwnerResultValue0Struct>
-  > {
-    let result = super.tryCall(
-      "batchedUpgradesOfOwner",
-      "batchedUpgradesOfOwner(address,uint256,uint256):((uint256,uint256,uint256)[])",
-      [
-        ethereum.Value.fromAddress(_owner),
-        ethereum.Value.fromUnsignedBigInt(_offset),
-        ethereum.Value.fromUnsignedBigInt(_maxSize)
-      ]
-    );
-    if (result.reverted) {
-      return new ethereum.CallResult();
-    }
-    let value = result.value;
-    return ethereum.CallResult.fromValue(
-      value[0].toTupleArray<Upgrade__batchedUpgradesOfOwnerResultValue0Struct>()
-    );
   }
 
   getApproved(tokenId: BigInt): Address {
@@ -540,6 +506,66 @@ export class Upgrade extends ethereum.SmartContract {
     return ethereum.CallResult.fromValue(value[0].toBoolean());
   }
 
+  royaltiesAddress(): Address {
+    let result = super.call(
+      "royaltiesAddress",
+      "royaltiesAddress():(address)",
+      []
+    );
+
+    return result[0].toAddress();
+  }
+
+  try_royaltiesAddress(): ethereum.CallResult<Address> {
+    let result = super.tryCall(
+      "royaltiesAddress",
+      "royaltiesAddress():(address)",
+      []
+    );
+    if (result.reverted) {
+      return new ethereum.CallResult();
+    }
+    let value = result.value;
+    return ethereum.CallResult.fromValue(value[0].toAddress());
+  }
+
+  royaltyInfo(tokenId: BigInt, value: BigInt): Upgrade__royaltyInfoResult {
+    let result = super.call(
+      "royaltyInfo",
+      "royaltyInfo(uint256,uint256):(address,uint256)",
+      [
+        ethereum.Value.fromUnsignedBigInt(tokenId),
+        ethereum.Value.fromUnsignedBigInt(value)
+      ]
+    );
+
+    return new Upgrade__royaltyInfoResult(
+      result[0].toAddress(),
+      result[1].toBigInt()
+    );
+  }
+
+  try_royaltyInfo(
+    tokenId: BigInt,
+    value: BigInt
+  ): ethereum.CallResult<Upgrade__royaltyInfoResult> {
+    let result = super.tryCall(
+      "royaltyInfo",
+      "royaltyInfo(uint256,uint256):(address,uint256)",
+      [
+        ethereum.Value.fromUnsignedBigInt(tokenId),
+        ethereum.Value.fromUnsignedBigInt(value)
+      ]
+    );
+    if (result.reverted) {
+      return new ethereum.CallResult();
+    }
+    let value = result.value;
+    return ethereum.CallResult.fromValue(
+      new Upgrade__royaltyInfoResult(value[0].toAddress(), value[1].toBigInt())
+    );
+  }
+
   startTime(): BigInt {
     let result = super.call("startTime", "startTime():(uint256)", []);
 
@@ -593,59 +619,6 @@ export class Upgrade extends ethereum.SmartContract {
     return ethereum.CallResult.fromValue(value[0].toString());
   }
 
-  tokenByIndex(index: BigInt): BigInt {
-    let result = super.call("tokenByIndex", "tokenByIndex(uint256):(uint256)", [
-      ethereum.Value.fromUnsignedBigInt(index)
-    ]);
-
-    return result[0].toBigInt();
-  }
-
-  try_tokenByIndex(index: BigInt): ethereum.CallResult<BigInt> {
-    let result = super.tryCall(
-      "tokenByIndex",
-      "tokenByIndex(uint256):(uint256)",
-      [ethereum.Value.fromUnsignedBigInt(index)]
-    );
-    if (result.reverted) {
-      return new ethereum.CallResult();
-    }
-    let value = result.value;
-    return ethereum.CallResult.fromValue(value[0].toBigInt());
-  }
-
-  tokenOfOwnerByIndex(owner: Address, index: BigInt): BigInt {
-    let result = super.call(
-      "tokenOfOwnerByIndex",
-      "tokenOfOwnerByIndex(address,uint256):(uint256)",
-      [
-        ethereum.Value.fromAddress(owner),
-        ethereum.Value.fromUnsignedBigInt(index)
-      ]
-    );
-
-    return result[0].toBigInt();
-  }
-
-  try_tokenOfOwnerByIndex(
-    owner: Address,
-    index: BigInt
-  ): ethereum.CallResult<BigInt> {
-    let result = super.tryCall(
-      "tokenOfOwnerByIndex",
-      "tokenOfOwnerByIndex(address,uint256):(uint256)",
-      [
-        ethereum.Value.fromAddress(owner),
-        ethereum.Value.fromUnsignedBigInt(index)
-      ]
-    );
-    if (result.reverted) {
-      return new ethereum.CallResult();
-    }
-    let value = result.value;
-    return ethereum.CallResult.fromValue(value[0].toBigInt());
-  }
-
   tokenURI(_tokenId: BigInt): string {
     let result = super.call("tokenURI", "tokenURI(uint256):(string)", [
       ethereum.Value.fromUnsignedBigInt(_tokenId)
@@ -663,21 +636,6 @@ export class Upgrade extends ethereum.SmartContract {
     }
     let value = result.value;
     return ethereum.CallResult.fromValue(value[0].toString());
-  }
-
-  totalSupply(): BigInt {
-    let result = super.call("totalSupply", "totalSupply():(uint256)", []);
-
-    return result[0].toBigInt();
-  }
-
-  try_totalSupply(): ethereum.CallResult<BigInt> {
-    let result = super.tryCall("totalSupply", "totalSupply():(uint256)", []);
-    if (result.reverted) {
-      return new ethereum.CallResult();
-    }
-    let value = result.value;
-    return ethereum.CallResult.fromValue(value[0].toBigInt());
   }
 
   upgradesMinted(): BigInt {
@@ -1147,6 +1105,66 @@ export class SetGrapeCall__Outputs {
   _call: SetGrapeCall;
 
   constructor(call: SetGrapeCall) {
+    this._call = call;
+  }
+}
+
+export class SetRoyaltiesAddressCall extends ethereum.Call {
+  get inputs(): SetRoyaltiesAddressCall__Inputs {
+    return new SetRoyaltiesAddressCall__Inputs(this);
+  }
+
+  get outputs(): SetRoyaltiesAddressCall__Outputs {
+    return new SetRoyaltiesAddressCall__Outputs(this);
+  }
+}
+
+export class SetRoyaltiesAddressCall__Inputs {
+  _call: SetRoyaltiesAddressCall;
+
+  constructor(call: SetRoyaltiesAddressCall) {
+    this._call = call;
+  }
+
+  get _royaltiesAddress(): Address {
+    return this._call.inputValues[0].value.toAddress();
+  }
+}
+
+export class SetRoyaltiesAddressCall__Outputs {
+  _call: SetRoyaltiesAddressCall;
+
+  constructor(call: SetRoyaltiesAddressCall) {
+    this._call = call;
+  }
+}
+
+export class SetRoyaltiesFeesCall extends ethereum.Call {
+  get inputs(): SetRoyaltiesFeesCall__Inputs {
+    return new SetRoyaltiesFeesCall__Inputs(this);
+  }
+
+  get outputs(): SetRoyaltiesFeesCall__Outputs {
+    return new SetRoyaltiesFeesCall__Outputs(this);
+  }
+}
+
+export class SetRoyaltiesFeesCall__Inputs {
+  _call: SetRoyaltiesFeesCall;
+
+  constructor(call: SetRoyaltiesFeesCall) {
+    this._call = call;
+  }
+
+  get _royaltiesFees(): BigInt {
+    return this._call.inputValues[0].value.toBigInt();
+  }
+}
+
+export class SetRoyaltiesFeesCall__Outputs {
+  _call: SetRoyaltiesFeesCall;
+
+  constructor(call: SetRoyaltiesFeesCall) {
     this._call = call;
   }
 }

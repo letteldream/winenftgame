@@ -4,9 +4,9 @@ schema:
 dataSources:
   - kind: ethereum
     name: Vintner
-    network: fuji
+    network: avalanche
     source:
-      address: "0xCfD5685c84ff9745BF4DE8BA511431bC72aacd5C"
+      address: "0x1DC322CB392F608139Cd52088Aa8C167f826aE17"
       abi: Vintner
     mapping:
       kind: ethereum/events
@@ -25,9 +25,9 @@ dataSources:
       file: Vintner\Vintner.wasm
   - kind: ethereum
     name: Upgrade
-    network: fuji
+    network: avalanche
     source:
-      address: "0x75e25051BEdd7f2F0B952B4B5acB2fc425d80484"
+      address: "0xBC2C298C2F55f7a6CEFA448460ab3Ca3d38Ca4C4"
       abi: Upgrade
     mapping:
       kind: ethereum/events

@@ -186,13 +186,28 @@ export class onVintnerRevealed__Params {
   }
 }
 
-export class Vintner__batchedVintnersOfOwnerResultValue0Struct extends ethereum.Tuple {
-  get tokenId(): BigInt {
-    return this[0].toBigInt();
+export class Vintner__royaltyInfoResult {
+  value0: Address;
+  value1: BigInt;
+
+  constructor(value0: Address, value1: BigInt) {
+    this.value0 = value0;
+    this.value1 = value1;
   }
 
-  get vintnerType(): BigInt {
-    return this[1].toBigInt();
+  toMap(): TypedMap<string, ethereum.Value> {
+    let map = new TypedMap<string, ethereum.Value>();
+    map.set("value0", ethereum.Value.fromAddress(this.value0));
+    map.set("value1", ethereum.Value.fromUnsignedBigInt(this.value1));
+    return map;
+  }
+
+  getReceiver(): Address {
+    return this.value0;
+  }
+
+  getRoyaltyAmount(): BigInt {
+    return this.value1;
   }
 }
 
@@ -262,45 +277,14 @@ export class Vintner extends ethereum.SmartContract {
     return ethereum.CallResult.fromValue(value[0].toBigInt());
   }
 
-  NUM_GEN0_VINTNERS(): BigInt {
-    let result = super.call(
-      "NUM_GEN0_VINTNERS",
-      "NUM_GEN0_VINTNERS():(uint256)",
-      []
-    );
+  NUM_VINTNERS(): BigInt {
+    let result = super.call("NUM_VINTNERS", "NUM_VINTNERS():(uint256)", []);
 
     return result[0].toBigInt();
   }
 
-  try_NUM_GEN0_VINTNERS(): ethereum.CallResult<BigInt> {
-    let result = super.tryCall(
-      "NUM_GEN0_VINTNERS",
-      "NUM_GEN0_VINTNERS():(uint256)",
-      []
-    );
-    if (result.reverted) {
-      return new ethereum.CallResult();
-    }
-    let value = result.value;
-    return ethereum.CallResult.fromValue(value[0].toBigInt());
-  }
-
-  NUM_GEN1_VINTNERS(): BigInt {
-    let result = super.call(
-      "NUM_GEN1_VINTNERS",
-      "NUM_GEN1_VINTNERS():(uint256)",
-      []
-    );
-
-    return result[0].toBigInt();
-  }
-
-  try_NUM_GEN1_VINTNERS(): ethereum.CallResult<BigInt> {
-    let result = super.tryCall(
-      "NUM_GEN1_VINTNERS",
-      "NUM_GEN1_VINTNERS():(uint256)",
-      []
-    );
+  try_NUM_VINTNERS(): ethereum.CallResult<BigInt> {
+    let result = super.tryCall("NUM_VINTNERS", "NUM_VINTNERS():(uint256)", []);
     if (result.reverted) {
       return new ethereum.CallResult();
     }
@@ -331,29 +315,6 @@ export class Vintner extends ethereum.SmartContract {
     return ethereum.CallResult.fromValue(value[0].toBigInt());
   }
 
-  VINTNERS_PER_VINTAGEWINE_MINT_LEVEL(): BigInt {
-    let result = super.call(
-      "VINTNERS_PER_VINTAGEWINE_MINT_LEVEL",
-      "VINTNERS_PER_VINTAGEWINE_MINT_LEVEL():(uint256)",
-      []
-    );
-
-    return result[0].toBigInt();
-  }
-
-  try_VINTNERS_PER_VINTAGEWINE_MINT_LEVEL(): ethereum.CallResult<BigInt> {
-    let result = super.tryCall(
-      "VINTNERS_PER_VINTAGEWINE_MINT_LEVEL",
-      "VINTNERS_PER_VINTAGEWINE_MINT_LEVEL():(uint256)",
-      []
-    );
-    if (result.reverted) {
-      return new ethereum.CallResult();
-    }
-    let value = result.value;
-    return ethereum.CallResult.fromValue(value[0].toBigInt());
-  }
-
   VINTNER_PRICE_AVAX(): BigInt {
     let result = super.call(
       "VINTNER_PRICE_AVAX",
@@ -368,6 +329,29 @@ export class Vintner extends ethereum.SmartContract {
     let result = super.tryCall(
       "VINTNER_PRICE_AVAX",
       "VINTNER_PRICE_AVAX():(uint256)",
+      []
+    );
+    if (result.reverted) {
+      return new ethereum.CallResult();
+    }
+    let value = result.value;
+    return ethereum.CallResult.fromValue(value[0].toBigInt());
+  }
+
+  VINTNER_PRICE_GRAPE(): BigInt {
+    let result = super.call(
+      "VINTNER_PRICE_GRAPE",
+      "VINTNER_PRICE_GRAPE():(uint256)",
+      []
+    );
+
+    return result[0].toBigInt();
+  }
+
+  try_VINTNER_PRICE_GRAPE(): ethereum.CallResult<BigInt> {
+    let result = super.tryCall(
+      "VINTNER_PRICE_GRAPE",
+      "VINTNER_PRICE_GRAPE():(uint256)",
       []
     );
     if (result.reverted) {
@@ -411,6 +395,29 @@ export class Vintner extends ethereum.SmartContract {
     return ethereum.CallResult.fromValue(value[0].toBigInt());
   }
 
+  WHITELIST_VINTNERS(): BigInt {
+    let result = super.call(
+      "WHITELIST_VINTNERS",
+      "WHITELIST_VINTNERS():(uint256)",
+      []
+    );
+
+    return result[0].toBigInt();
+  }
+
+  try_WHITELIST_VINTNERS(): ethereum.CallResult<BigInt> {
+    let result = super.tryCall(
+      "WHITELIST_VINTNERS",
+      "WHITELIST_VINTNERS():(uint256)",
+      []
+    );
+    if (result.reverted) {
+      return new ethereum.CallResult();
+    }
+    let value = result.value;
+    return ethereum.CallResult.fromValue(value[0].toBigInt());
+  }
+
   balanceOf(owner: Address): BigInt {
     let result = super.call("balanceOf", "balanceOf(address):(uint256)", [
       ethereum.Value.fromAddress(owner)
@@ -430,72 +437,19 @@ export class Vintner extends ethereum.SmartContract {
     return ethereum.CallResult.fromValue(value[0].toBigInt());
   }
 
-  batchedVintnersOfOwner(
-    _owner: Address,
-    _offset: BigInt,
-    _maxSize: BigInt
-  ): Array<Vintner__batchedVintnersOfOwnerResultValue0Struct> {
-    let result = super.call(
-      "batchedVintnersOfOwner",
-      "batchedVintnersOfOwner(address,uint256,uint256):((uint256,uint256)[])",
-      [
-        ethereum.Value.fromAddress(_owner),
-        ethereum.Value.fromUnsignedBigInt(_offset),
-        ethereum.Value.fromUnsignedBigInt(_maxSize)
-      ]
-    );
+  couponSigner(): Address {
+    let result = super.call("couponSigner", "couponSigner():(address)", []);
 
-    return result[0].toTupleArray<
-      Vintner__batchedVintnersOfOwnerResultValue0Struct
-    >();
+    return result[0].toAddress();
   }
 
-  try_batchedVintnersOfOwner(
-    _owner: Address,
-    _offset: BigInt,
-    _maxSize: BigInt
-  ): ethereum.CallResult<
-    Array<Vintner__batchedVintnersOfOwnerResultValue0Struct>
-  > {
-    let result = super.tryCall(
-      "batchedVintnersOfOwner",
-      "batchedVintnersOfOwner(address,uint256,uint256):((uint256,uint256)[])",
-      [
-        ethereum.Value.fromAddress(_owner),
-        ethereum.Value.fromUnsignedBigInt(_offset),
-        ethereum.Value.fromUnsignedBigInt(_maxSize)
-      ]
-    );
+  try_couponSigner(): ethereum.CallResult<Address> {
+    let result = super.tryCall("couponSigner", "couponSigner():(address)", []);
     if (result.reverted) {
       return new ethereum.CallResult();
     }
     let value = result.value;
-    return ethereum.CallResult.fromValue(
-      value[0].toTupleArray<Vintner__batchedVintnersOfOwnerResultValue0Struct>()
-    );
-  }
-
-  currentVINTAGEWINEMintCost(): BigInt {
-    let result = super.call(
-      "currentVINTAGEWINEMintCost",
-      "currentVINTAGEWINEMintCost():(uint256)",
-      []
-    );
-
-    return result[0].toBigInt();
-  }
-
-  try_currentVINTAGEWINEMintCost(): ethereum.CallResult<BigInt> {
-    let result = super.tryCall(
-      "currentVINTAGEWINEMintCost",
-      "currentVINTAGEWINEMintCost():(uint256)",
-      []
-    );
-    if (result.reverted) {
-      return new ethereum.CallResult();
-    }
-    let value = result.value;
-    return ethereum.CallResult.fromValue(value[0].toBigInt());
+    return ethereum.CallResult.fromValue(value[0].toAddress());
   }
 
   getApproved(tokenId: BigInt): Address {
@@ -557,6 +511,21 @@ export class Vintner extends ethereum.SmartContract {
     return ethereum.CallResult.fromValue(value[0].toBigInt());
   }
 
+  grapeAddress(): Address {
+    let result = super.call("grapeAddress", "grapeAddress():(address)", []);
+
+    return result[0].toAddress();
+  }
+
+  try_grapeAddress(): ethereum.CallResult<Address> {
+    let result = super.tryCall("grapeAddress", "grapeAddress():(address)", []);
+    if (result.reverted) {
+      return new ethereum.CallResult();
+    }
+    let value = result.value;
+    return ethereum.CallResult.fromValue(value[0].toAddress());
+  }
+
   isApprovedForAll(_owner: Address, _operator: Address): boolean {
     let result = super.call(
       "isApprovedForAll",
@@ -589,22 +558,14 @@ export class Vintner extends ethereum.SmartContract {
     return ethereum.CallResult.fromValue(value[0].toBoolean());
   }
 
-  mintingStartedAVAX(): boolean {
-    let result = super.call(
-      "mintingStartedAVAX",
-      "mintingStartedAVAX():(bool)",
-      []
-    );
+  mintingStarted(): boolean {
+    let result = super.call("mintingStarted", "mintingStarted():(bool)", []);
 
     return result[0].toBoolean();
   }
 
-  try_mintingStartedAVAX(): ethereum.CallResult<boolean> {
-    let result = super.tryCall(
-      "mintingStartedAVAX",
-      "mintingStartedAVAX():(bool)",
-      []
-    );
+  try_mintingStarted(): ethereum.CallResult<boolean> {
+    let result = super.tryCall("mintingStarted", "mintingStarted():(bool)", []);
     if (result.reverted) {
       return new ethereum.CallResult();
     }
@@ -612,20 +573,20 @@ export class Vintner extends ethereum.SmartContract {
     return ethereum.CallResult.fromValue(value[0].toBoolean());
   }
 
-  mintingStartedVINTAGEWINE(): boolean {
+  mintingStartedWhitelist(): boolean {
     let result = super.call(
-      "mintingStartedVINTAGEWINE",
-      "mintingStartedVINTAGEWINE():(bool)",
+      "mintingStartedWhitelist",
+      "mintingStartedWhitelist():(bool)",
       []
     );
 
     return result[0].toBoolean();
   }
 
-  try_mintingStartedVINTAGEWINE(): ethereum.CallResult<boolean> {
+  try_mintingStartedWhitelist(): ethereum.CallResult<boolean> {
     let result = super.tryCall(
-      "mintingStartedVINTAGEWINE",
-      "mintingStartedVINTAGEWINE():(bool)",
+      "mintingStartedWhitelist",
+      "mintingStartedWhitelist():(bool)",
       []
     );
     if (result.reverted) {
@@ -699,18 +660,74 @@ export class Vintner extends ethereum.SmartContract {
     return ethereum.CallResult.fromValue(value[0].toBoolean());
   }
 
-  startTimeAVAX(): BigInt {
-    let result = super.call("startTimeAVAX", "startTimeAVAX():(uint256)", []);
+  royaltiesAddress(): Address {
+    let result = super.call(
+      "royaltiesAddress",
+      "royaltiesAddress():(address)",
+      []
+    );
+
+    return result[0].toAddress();
+  }
+
+  try_royaltiesAddress(): ethereum.CallResult<Address> {
+    let result = super.tryCall(
+      "royaltiesAddress",
+      "royaltiesAddress():(address)",
+      []
+    );
+    if (result.reverted) {
+      return new ethereum.CallResult();
+    }
+    let value = result.value;
+    return ethereum.CallResult.fromValue(value[0].toAddress());
+  }
+
+  royaltyInfo(tokenId: BigInt, value: BigInt): Vintner__royaltyInfoResult {
+    let result = super.call(
+      "royaltyInfo",
+      "royaltyInfo(uint256,uint256):(address,uint256)",
+      [
+        ethereum.Value.fromUnsignedBigInt(tokenId),
+        ethereum.Value.fromUnsignedBigInt(value)
+      ]
+    );
+
+    return new Vintner__royaltyInfoResult(
+      result[0].toAddress(),
+      result[1].toBigInt()
+    );
+  }
+
+  try_royaltyInfo(
+    tokenId: BigInt,
+    value: BigInt
+  ): ethereum.CallResult<Vintner__royaltyInfoResult> {
+    let result = super.tryCall(
+      "royaltyInfo",
+      "royaltyInfo(uint256,uint256):(address,uint256)",
+      [
+        ethereum.Value.fromUnsignedBigInt(tokenId),
+        ethereum.Value.fromUnsignedBigInt(value)
+      ]
+    );
+    if (result.reverted) {
+      return new ethereum.CallResult();
+    }
+    let value = result.value;
+    return ethereum.CallResult.fromValue(
+      new Vintner__royaltyInfoResult(value[0].toAddress(), value[1].toBigInt())
+    );
+  }
+
+  startTime(): BigInt {
+    let result = super.call("startTime", "startTime():(uint256)", []);
 
     return result[0].toBigInt();
   }
 
-  try_startTimeAVAX(): ethereum.CallResult<BigInt> {
-    let result = super.tryCall(
-      "startTimeAVAX",
-      "startTimeAVAX():(uint256)",
-      []
-    );
+  try_startTime(): ethereum.CallResult<BigInt> {
+    let result = super.tryCall("startTime", "startTime():(uint256)", []);
     if (result.reverted) {
       return new ethereum.CallResult();
     }
@@ -718,20 +735,20 @@ export class Vintner extends ethereum.SmartContract {
     return ethereum.CallResult.fromValue(value[0].toBigInt());
   }
 
-  startTimeVINTAGEWINE(): BigInt {
+  startTimeWhitelist(): BigInt {
     let result = super.call(
-      "startTimeVINTAGEWINE",
-      "startTimeVINTAGEWINE():(uint256)",
+      "startTimeWhitelist",
+      "startTimeWhitelist():(uint256)",
       []
     );
 
     return result[0].toBigInt();
   }
 
-  try_startTimeVINTAGEWINE(): ethereum.CallResult<BigInt> {
+  try_startTimeWhitelist(): ethereum.CallResult<BigInt> {
     let result = super.tryCall(
-      "startTimeVINTAGEWINE",
-      "startTimeVINTAGEWINE():(uint256)",
+      "startTimeWhitelist",
+      "startTimeWhitelist():(uint256)",
       []
     );
     if (result.reverted) {
@@ -779,59 +796,6 @@ export class Vintner extends ethereum.SmartContract {
     return ethereum.CallResult.fromValue(value[0].toString());
   }
 
-  tokenByIndex(index: BigInt): BigInt {
-    let result = super.call("tokenByIndex", "tokenByIndex(uint256):(uint256)", [
-      ethereum.Value.fromUnsignedBigInt(index)
-    ]);
-
-    return result[0].toBigInt();
-  }
-
-  try_tokenByIndex(index: BigInt): ethereum.CallResult<BigInt> {
-    let result = super.tryCall(
-      "tokenByIndex",
-      "tokenByIndex(uint256):(uint256)",
-      [ethereum.Value.fromUnsignedBigInt(index)]
-    );
-    if (result.reverted) {
-      return new ethereum.CallResult();
-    }
-    let value = result.value;
-    return ethereum.CallResult.fromValue(value[0].toBigInt());
-  }
-
-  tokenOfOwnerByIndex(owner: Address, index: BigInt): BigInt {
-    let result = super.call(
-      "tokenOfOwnerByIndex",
-      "tokenOfOwnerByIndex(address,uint256):(uint256)",
-      [
-        ethereum.Value.fromAddress(owner),
-        ethereum.Value.fromUnsignedBigInt(index)
-      ]
-    );
-
-    return result[0].toBigInt();
-  }
-
-  try_tokenOfOwnerByIndex(
-    owner: Address,
-    index: BigInt
-  ): ethereum.CallResult<BigInt> {
-    let result = super.tryCall(
-      "tokenOfOwnerByIndex",
-      "tokenOfOwnerByIndex(address,uint256):(uint256)",
-      [
-        ethereum.Value.fromAddress(owner),
-        ethereum.Value.fromUnsignedBigInt(index)
-      ]
-    );
-    if (result.reverted) {
-      return new ethereum.CallResult();
-    }
-    let value = result.value;
-    return ethereum.CallResult.fromValue(value[0].toBigInt());
-  }
-
   tokenTypes(param0: BigInt): BigInt {
     let result = super.call("tokenTypes", "tokenTypes(uint256):(uint256)", [
       ethereum.Value.fromUnsignedBigInt(param0)
@@ -870,21 +834,6 @@ export class Vintner extends ethereum.SmartContract {
     return ethereum.CallResult.fromValue(value[0].toString());
   }
 
-  totalSupply(): BigInt {
-    let result = super.call("totalSupply", "totalSupply():(uint256)", []);
-
-    return result[0].toBigInt();
-  }
-
-  try_totalSupply(): ethereum.CallResult<BigInt> {
-    let result = super.tryCall("totalSupply", "totalSupply():(uint256)", []);
-    if (result.reverted) {
-      return new ethereum.CallResult();
-    }
-    let value = result.value;
-    return ethereum.CallResult.fromValue(value[0].toBigInt());
-  }
-
   typeYields(param0: BigInt): BigInt {
     let result = super.call("typeYields", "typeYields(uint256):(uint256)", [
       ethereum.Value.fromUnsignedBigInt(param0)
@@ -904,19 +853,27 @@ export class Vintner extends ethereum.SmartContract {
     return ethereum.CallResult.fromValue(value[0].toBigInt());
   }
 
-  vintageWine(): Address {
-    let result = super.call("vintageWine", "vintageWine():(address)", []);
+  vintnerPublicMinted(): BigInt {
+    let result = super.call(
+      "vintnerPublicMinted",
+      "vintnerPublicMinted():(uint256)",
+      []
+    );
 
-    return result[0].toAddress();
+    return result[0].toBigInt();
   }
 
-  try_vintageWine(): ethereum.CallResult<Address> {
-    let result = super.tryCall("vintageWine", "vintageWine():(address)", []);
+  try_vintnerPublicMinted(): ethereum.CallResult<BigInt> {
+    let result = super.tryCall(
+      "vintnerPublicMinted",
+      "vintnerPublicMinted():(uint256)",
+      []
+    );
     if (result.reverted) {
       return new ethereum.CallResult();
     }
     let value = result.value;
-    return ethereum.CallResult.fromValue(value[0].toAddress());
+    return ethereum.CallResult.fromValue(value[0].toBigInt());
   }
 
   vintnerTypeOracleAddress(): Address {
@@ -984,20 +941,20 @@ export class Vintner extends ethereum.SmartContract {
     return ethereum.CallResult.fromValue(value[0].toBigInt());
   }
 
-  vintnersMintedWithAVAX(): BigInt {
+  vintnersMintedWhitelist(): BigInt {
     let result = super.call(
-      "vintnersMintedWithAVAX",
-      "vintnersMintedWithAVAX():(uint256)",
+      "vintnersMintedWhitelist",
+      "vintnersMintedWhitelist():(uint256)",
       []
     );
 
     return result[0].toBigInt();
   }
 
-  try_vintnersMintedWithAVAX(): ethereum.CallResult<BigInt> {
+  try_vintnersMintedWhitelist(): ethereum.CallResult<BigInt> {
     let result = super.tryCall(
-      "vintnersMintedWithAVAX",
-      "vintnersMintedWithAVAX():(uint256)",
+      "vintnersMintedWhitelist",
+      "vintnersMintedWhitelist():(uint256)",
       []
     );
     if (result.reverted) {
@@ -1007,21 +964,21 @@ export class Vintner extends ethereum.SmartContract {
     return ethereum.CallResult.fromValue(value[0].toBigInt());
   }
 
-  vintnersMintedWithVINTAGEWINE(): BigInt {
+  whitelistClaimed(param0: Address): BigInt {
     let result = super.call(
-      "vintnersMintedWithVINTAGEWINE",
-      "vintnersMintedWithVINTAGEWINE():(uint256)",
-      []
+      "whitelistClaimed",
+      "whitelistClaimed(address):(uint256)",
+      [ethereum.Value.fromAddress(param0)]
     );
 
     return result[0].toBigInt();
   }
 
-  try_vintnersMintedWithVINTAGEWINE(): ethereum.CallResult<BigInt> {
+  try_whitelistClaimed(param0: Address): ethereum.CallResult<BigInt> {
     let result = super.tryCall(
-      "vintnersMintedWithVINTAGEWINE",
-      "vintnersMintedWithVINTAGEWINE():(uint256)",
-      []
+      "whitelistClaimed",
+      "whitelistClaimed(address):(uint256)",
+      [ethereum.Value.fromAddress(param0)]
     );
     if (result.reverted) {
       return new ethereum.CallResult();
@@ -1067,16 +1024,20 @@ export class ConstructorCall__Inputs {
     this._call = call;
   }
 
-  get _vintageWine(): Address {
+  get _grapeAddress(): Address {
     return this._call.inputValues[0].value.toAddress();
   }
 
-  get _vintnerTypeOracleAddress(): Address {
+  get _couponSigner(): Address {
     return this._call.inputValues[1].value.toAddress();
   }
 
+  get _vintnerTypeOracleAddress(): Address {
+    return this._call.inputValues[2].value.toAddress();
+  }
+
   get _BASE_URI(): string {
-    return this._call.inputValues[2].value.toString();
+    return this._call.inputValues[3].value.toString();
   }
 }
 
@@ -1228,20 +1189,20 @@ export class MintVintnerWithAVAXCall__Outputs {
   }
 }
 
-export class MintVintnerWithVINTAGEWINECall extends ethereum.Call {
-  get inputs(): MintVintnerWithVINTAGEWINECall__Inputs {
-    return new MintVintnerWithVINTAGEWINECall__Inputs(this);
+export class MintVintnerWithGrapeCall extends ethereum.Call {
+  get inputs(): MintVintnerWithGrapeCall__Inputs {
+    return new MintVintnerWithGrapeCall__Inputs(this);
   }
 
-  get outputs(): MintVintnerWithVINTAGEWINECall__Outputs {
-    return new MintVintnerWithVINTAGEWINECall__Outputs(this);
+  get outputs(): MintVintnerWithGrapeCall__Outputs {
+    return new MintVintnerWithGrapeCall__Outputs(this);
   }
 }
 
-export class MintVintnerWithVINTAGEWINECall__Inputs {
-  _call: MintVintnerWithVINTAGEWINECall;
+export class MintVintnerWithGrapeCall__Inputs {
+  _call: MintVintnerWithGrapeCall;
 
-  constructor(call: MintVintnerWithVINTAGEWINECall) {
+  constructor(call: MintVintnerWithGrapeCall) {
     this._call = call;
   }
 
@@ -1250,11 +1211,65 @@ export class MintVintnerWithVINTAGEWINECall__Inputs {
   }
 }
 
-export class MintVintnerWithVINTAGEWINECall__Outputs {
-  _call: MintVintnerWithVINTAGEWINECall;
+export class MintVintnerWithGrapeCall__Outputs {
+  _call: MintVintnerWithGrapeCall;
 
-  constructor(call: MintVintnerWithVINTAGEWINECall) {
+  constructor(call: MintVintnerWithGrapeCall) {
     this._call = call;
+  }
+}
+
+export class MintWhitelistCall extends ethereum.Call {
+  get inputs(): MintWhitelistCall__Inputs {
+    return new MintWhitelistCall__Inputs(this);
+  }
+
+  get outputs(): MintWhitelistCall__Outputs {
+    return new MintWhitelistCall__Outputs(this);
+  }
+}
+
+export class MintWhitelistCall__Inputs {
+  _call: MintWhitelistCall;
+
+  constructor(call: MintWhitelistCall) {
+    this._call = call;
+  }
+
+  get qty(): BigInt {
+    return this._call.inputValues[0].value.toBigInt();
+  }
+
+  get allotted(): BigInt {
+    return this._call.inputValues[1].value.toBigInt();
+  }
+
+  get coupon(): MintWhitelistCallCouponStruct {
+    return changetype<MintWhitelistCallCouponStruct>(
+      this._call.inputValues[2].value.toTuple()
+    );
+  }
+}
+
+export class MintWhitelistCall__Outputs {
+  _call: MintWhitelistCall;
+
+  constructor(call: MintWhitelistCall) {
+    this._call = call;
+  }
+}
+
+export class MintWhitelistCallCouponStruct extends ethereum.Tuple {
+  get r(): Bytes {
+    return this[0].toBytes();
+  }
+
+  get s(): Bytes {
+    return this[1].toBytes();
+  }
+
+  get v(): i32 {
+    return this[2].toI32();
   }
 }
 
@@ -1428,92 +1443,182 @@ export class SetBaseURICall__Outputs {
   }
 }
 
-export class SetStartTimeAVAXCall extends ethereum.Call {
-  get inputs(): SetStartTimeAVAXCall__Inputs {
-    return new SetStartTimeAVAXCall__Inputs(this);
+export class SetCouponSignerCall extends ethereum.Call {
+  get inputs(): SetCouponSignerCall__Inputs {
+    return new SetCouponSignerCall__Inputs(this);
   }
 
-  get outputs(): SetStartTimeAVAXCall__Outputs {
-    return new SetStartTimeAVAXCall__Outputs(this);
+  get outputs(): SetCouponSignerCall__Outputs {
+    return new SetCouponSignerCall__Outputs(this);
   }
 }
 
-export class SetStartTimeAVAXCall__Inputs {
-  _call: SetStartTimeAVAXCall;
+export class SetCouponSignerCall__Inputs {
+  _call: SetCouponSignerCall;
 
-  constructor(call: SetStartTimeAVAXCall) {
+  constructor(call: SetCouponSignerCall) {
     this._call = call;
   }
 
-  get _startTime(): BigInt {
-    return this._call.inputValues[0].value.toBigInt();
-  }
-}
-
-export class SetStartTimeAVAXCall__Outputs {
-  _call: SetStartTimeAVAXCall;
-
-  constructor(call: SetStartTimeAVAXCall) {
-    this._call = call;
-  }
-}
-
-export class SetStartTimeVINTAGEWINECall extends ethereum.Call {
-  get inputs(): SetStartTimeVINTAGEWINECall__Inputs {
-    return new SetStartTimeVINTAGEWINECall__Inputs(this);
-  }
-
-  get outputs(): SetStartTimeVINTAGEWINECall__Outputs {
-    return new SetStartTimeVINTAGEWINECall__Outputs(this);
-  }
-}
-
-export class SetStartTimeVINTAGEWINECall__Inputs {
-  _call: SetStartTimeVINTAGEWINECall;
-
-  constructor(call: SetStartTimeVINTAGEWINECall) {
-    this._call = call;
-  }
-
-  get _startTime(): BigInt {
-    return this._call.inputValues[0].value.toBigInt();
-  }
-}
-
-export class SetStartTimeVINTAGEWINECall__Outputs {
-  _call: SetStartTimeVINTAGEWINECall;
-
-  constructor(call: SetStartTimeVINTAGEWINECall) {
-    this._call = call;
-  }
-}
-
-export class SetVintageWineCall extends ethereum.Call {
-  get inputs(): SetVintageWineCall__Inputs {
-    return new SetVintageWineCall__Inputs(this);
-  }
-
-  get outputs(): SetVintageWineCall__Outputs {
-    return new SetVintageWineCall__Outputs(this);
-  }
-}
-
-export class SetVintageWineCall__Inputs {
-  _call: SetVintageWineCall;
-
-  constructor(call: SetVintageWineCall) {
-    this._call = call;
-  }
-
-  get _vintageWine(): Address {
+  get couponSigner_(): Address {
     return this._call.inputValues[0].value.toAddress();
   }
 }
 
-export class SetVintageWineCall__Outputs {
-  _call: SetVintageWineCall;
+export class SetCouponSignerCall__Outputs {
+  _call: SetCouponSignerCall;
 
-  constructor(call: SetVintageWineCall) {
+  constructor(call: SetCouponSignerCall) {
+    this._call = call;
+  }
+}
+
+export class SetGrapeAddressCall extends ethereum.Call {
+  get inputs(): SetGrapeAddressCall__Inputs {
+    return new SetGrapeAddressCall__Inputs(this);
+  }
+
+  get outputs(): SetGrapeAddressCall__Outputs {
+    return new SetGrapeAddressCall__Outputs(this);
+  }
+}
+
+export class SetGrapeAddressCall__Inputs {
+  _call: SetGrapeAddressCall;
+
+  constructor(call: SetGrapeAddressCall) {
+    this._call = call;
+  }
+
+  get _grapeAddress(): Address {
+    return this._call.inputValues[0].value.toAddress();
+  }
+}
+
+export class SetGrapeAddressCall__Outputs {
+  _call: SetGrapeAddressCall;
+
+  constructor(call: SetGrapeAddressCall) {
+    this._call = call;
+  }
+}
+
+export class SetRoyaltiesAddressCall extends ethereum.Call {
+  get inputs(): SetRoyaltiesAddressCall__Inputs {
+    return new SetRoyaltiesAddressCall__Inputs(this);
+  }
+
+  get outputs(): SetRoyaltiesAddressCall__Outputs {
+    return new SetRoyaltiesAddressCall__Outputs(this);
+  }
+}
+
+export class SetRoyaltiesAddressCall__Inputs {
+  _call: SetRoyaltiesAddressCall;
+
+  constructor(call: SetRoyaltiesAddressCall) {
+    this._call = call;
+  }
+
+  get _royaltiesAddress(): Address {
+    return this._call.inputValues[0].value.toAddress();
+  }
+}
+
+export class SetRoyaltiesAddressCall__Outputs {
+  _call: SetRoyaltiesAddressCall;
+
+  constructor(call: SetRoyaltiesAddressCall) {
+    this._call = call;
+  }
+}
+
+export class SetRoyaltiesFeesCall extends ethereum.Call {
+  get inputs(): SetRoyaltiesFeesCall__Inputs {
+    return new SetRoyaltiesFeesCall__Inputs(this);
+  }
+
+  get outputs(): SetRoyaltiesFeesCall__Outputs {
+    return new SetRoyaltiesFeesCall__Outputs(this);
+  }
+}
+
+export class SetRoyaltiesFeesCall__Inputs {
+  _call: SetRoyaltiesFeesCall;
+
+  constructor(call: SetRoyaltiesFeesCall) {
+    this._call = call;
+  }
+
+  get _royaltiesFees(): BigInt {
+    return this._call.inputValues[0].value.toBigInt();
+  }
+}
+
+export class SetRoyaltiesFeesCall__Outputs {
+  _call: SetRoyaltiesFeesCall;
+
+  constructor(call: SetRoyaltiesFeesCall) {
+    this._call = call;
+  }
+}
+
+export class SetStartTimeCall extends ethereum.Call {
+  get inputs(): SetStartTimeCall__Inputs {
+    return new SetStartTimeCall__Inputs(this);
+  }
+
+  get outputs(): SetStartTimeCall__Outputs {
+    return new SetStartTimeCall__Outputs(this);
+  }
+}
+
+export class SetStartTimeCall__Inputs {
+  _call: SetStartTimeCall;
+
+  constructor(call: SetStartTimeCall) {
+    this._call = call;
+  }
+
+  get _startTime(): BigInt {
+    return this._call.inputValues[0].value.toBigInt();
+  }
+}
+
+export class SetStartTimeCall__Outputs {
+  _call: SetStartTimeCall;
+
+  constructor(call: SetStartTimeCall) {
+    this._call = call;
+  }
+}
+
+export class SetStartTimeWhitelistCall extends ethereum.Call {
+  get inputs(): SetStartTimeWhitelistCall__Inputs {
+    return new SetStartTimeWhitelistCall__Inputs(this);
+  }
+
+  get outputs(): SetStartTimeWhitelistCall__Outputs {
+    return new SetStartTimeWhitelistCall__Outputs(this);
+  }
+}
+
+export class SetStartTimeWhitelistCall__Inputs {
+  _call: SetStartTimeWhitelistCall;
+
+  constructor(call: SetStartTimeWhitelistCall) {
+    this._call = call;
+  }
+
+  get _startTime(): BigInt {
+    return this._call.inputValues[0].value.toBigInt();
+  }
+}
+
+export class SetStartTimeWhitelistCall__Outputs {
+  _call: SetStartTimeWhitelistCall;
+
+  constructor(call: SetStartTimeWhitelistCall) {
     this._call = call;
   }
 }
@@ -1548,6 +1653,36 @@ export class SetVintnerTypeCall__Outputs {
   _call: SetVintnerTypeCall;
 
   constructor(call: SetVintnerTypeCall) {
+    this._call = call;
+  }
+}
+
+export class SetWhitelistMintCountCall extends ethereum.Call {
+  get inputs(): SetWhitelistMintCountCall__Inputs {
+    return new SetWhitelistMintCountCall__Inputs(this);
+  }
+
+  get outputs(): SetWhitelistMintCountCall__Outputs {
+    return new SetWhitelistMintCountCall__Outputs(this);
+  }
+}
+
+export class SetWhitelistMintCountCall__Inputs {
+  _call: SetWhitelistMintCountCall;
+
+  constructor(call: SetWhitelistMintCountCall) {
+    this._call = call;
+  }
+
+  get qty(): BigInt {
+    return this._call.inputValues[0].value.toBigInt();
+  }
+}
+
+export class SetWhitelistMintCountCall__Outputs {
+  _call: SetWhitelistMintCountCall;
+
+  constructor(call: SetWhitelistMintCountCall) {
     this._call = call;
   }
 }
